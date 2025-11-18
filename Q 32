@@ -1,0 +1,47 @@
+#include <stdio.h>
+
+void printEvenPositions(int arr[], int size) {
+    printf("Positions of even numbers: ");
+    int found = 0;
+
+    for (int i = 0; i < size; i++) {
+        if (arr[i] % 2 == 0) {
+            printf("%d ", i + 1);
+            found = 1;
+        }
+    }
+
+    if (!found)
+        printf("No even numbers found.");
+
+    printf("\n");
+}
+
+int main() {
+    int n, count = 0;
+
+    printf("Enter value of n: ");
+    scanf("%d", &n);
+
+    int arr[n];
+
+    // Insert numbers divisible by 3
+    for (int i = 1; i <= n; i++) {
+        if (i % 3 == 0) {
+            arr[count] = i;
+            count++;
+        }
+    }
+
+    // Print the generated array
+    printf("Array containing numbers divisible by 3: ");
+    for (int i = 0; i < count; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+
+    // Find positions of even numbers
+    printEvenPositions(arr, count);
+
+    return 0;
+}
