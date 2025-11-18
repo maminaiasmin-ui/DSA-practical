@@ -1,0 +1,97 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct SubNode {
+    int data;
+    struct SubNode* next;
+};
+
+struct MainNode {
+    int data;
+    struct SubNode* subList;
+    struct MainNode* next;
+};
+
+// Create sub node
+struct SubNode* createSubNode(int value) {
+    struct SubNode* newNode = (struct SubNode*) malloc(sizeof(struct SubNode));
+    newNode->data = value;
+    newNode->next = NULL;
+    return newNode;
+}
+
+// Create main node
+struct MainNode* createMainNode(int value) {
+    struct MainNode* newNode = (struct MainNode*) malloc(sizeof(struct MainNode));
+    newNode->data = value;
+    newNode->subList = NULL;
+    newNode->next = NULL;
+    return newNode;
+}
+
+// Print list of lists
+void printList(struct MainNode* head) {
+    struct MainNode* tempMain = head;
+
+    while (tempMain != NULL) {
+        printf("Main Node %d: ", tempMain->data);
+        struct SubNode* tempSub = tempMain->subList;
+
+        while (tempSub != NULL) {
+            printf("%d ", tempSub->data);
+            tempSub = tempSub->next;
+        }
+        printf("\n");
+        tempMain = tempMain->next;
+    }
+}
+
+int main() {
+    int mainCount, subCount, value;
+
+    struct MainNode* head = NULL;
+    struct MainNode* tempMain = NULL;
+
+    printf("Enter number of main nodes: ");
+    scanf("%d", &mainCount);
+
+    for (int i = 0; i < mainCount; i++) {
+        printf("\nEnter value for main node %d: ", i + 1);
+        scanf("%d", &value);
+
+        struct MainNode* newMain = createMainNode(value);
+
+        if (head == NULL) {
+            head = newMain;
+            tempMain = head;
+        } else {
+            tempMain->next = newMain;
+            tempMain = tempMain->next;
+        }
+
+        printf("Enter number of sub nodes for main node %d: ", value);
+        scanf("%d", &subCount);
+
+        struct SubNode* tempSub = NULL;
+
+        for (int j = 0; j < subCount; j++) {
+            printf("Enter value for sub node %d: ", j + 1);
+            scanf("%d", &value);
+
+            struct SubNode* newSub = createSubNode(value);
+
+            if (tempMain->subList == NULL) {
+                tempMain->subList = newSub;
+                tempSub = newSub;
+            } else {
+                tempSub->next = newSub;
+                tempSub = tempSub->next;
+            }
+        }
+    }
+
+    printf("\nList of Lists:\n");
+    printList(head);
+
+    return 0;
+}
