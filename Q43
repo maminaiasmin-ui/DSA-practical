@@ -1,0 +1,71 @@
+#include <stdio.h>
+#define MAX 5
+
+int queue[MAX];
+int front = -1, rear = -1;
+
+// Check if queue is full
+int isFull() {
+    return rear == MAX - 1;
+}
+
+// Check if queue is empty
+int isEmpty() {
+    return (front == -1 || front > rear);
+}
+
+// Insert into queue
+void enqueue(int value) {
+    if (isFull()) {
+        printf("Queue is FULL! Cannot insert %d\n", value);
+        return;
+    }
+
+    if (front == -1)
+        front = 0;
+
+    queue[++rear] = value;
+    printf("%d inserted into queue.\n", value);
+}
+
+// Delete from queue
+void dequeue() {
+    if (isEmpty()) {
+        printf("Queue is EMPTY! Nothing to delete.\n");
+        return;
+    }
+
+    printf("%d deleted from queue.\n", queue[front]);
+    front++;
+}
+
+// Display queue
+void display() {
+    if (isEmpty()) {
+        printf("Queue is EMPTY!\n");
+        return;
+    }
+
+    printf("Queue elements: ");
+    for (int i = front; i <= rear; i++)
+        printf("%d ", queue[i]);
+    printf("\n");
+}
+
+int main() {
+    enqueue(10);
+    enqueue(20);
+    enqueue(30);
+    enqueue(40);
+    enqueue(50);
+    enqueue(60);  // Overflow
+
+    display();
+
+    dequeue();
+    dequeue();
+
+    display();
+
+    return 0;
+}
