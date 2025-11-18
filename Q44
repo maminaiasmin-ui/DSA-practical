@@ -1,0 +1,88 @@
+#include <stdio.h>
+#define MAX 5
+
+int cq[MAX];
+int front = -1, rear = -1;
+
+// Check if full
+int isFull() {
+    return ((rear + 1) % MAX == front);
+}
+
+// Check if empty
+int isEmpty() {
+    return (front == -1);
+}
+
+// Insert
+void enqueue(int value) {
+    if (isFull()) {
+        printf("Circular Queue is FULL! Cannot insert %d\n", value);
+        return;
+    }
+
+    if (isEmpty()) {
+        front = rear = 0;
+    } else {
+        rear = (rear + 1) % MAX;
+    }
+
+    cq[rear] = value;
+    printf("%d inserted.\n", value);
+}
+
+// Delete
+void dequeue() {
+    if (isEmpty()) {
+        printf("Circular Queue is EMPTY! Nothing to delete.\n");
+        return;
+    }
+
+    printf("%d deleted.\n", cq[front]);
+
+    if (front == rear) {
+        front = rear = -1;
+    } else {
+        front = (front + 1) % MAX;
+    }
+}
+
+// Display
+void display() {
+    if (isEmpty()) {
+        printf("Circular Queue is EMPTY!\n");
+        return;
+    }
+
+    printf("Circular Queue elements: ");
+
+    int i = front;
+    while (i != rear) {
+        printf("%d ", cq[i]);
+        i = (i + 1) % MAX;
+    }
+    printf("%d\n", cq[rear]);
+}
+
+int main() {
+    enqueue(10);
+    enqueue(20);
+    enqueue(30);
+    enqueue(40);
+    enqueue(50); // Full here
+    enqueue(60);
+
+    display();
+
+    dequeue();
+    dequeue();
+
+    display();
+
+    enqueue(70);
+    enqueue(80);
+
+    display();
+
+    return 0;
+}
