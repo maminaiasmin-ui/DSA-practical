@@ -1,0 +1,94 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+struct Node *front = NULL, *rear = NULL;
+
+// Check if queue is empty
+int isEmpty() {
+    return front == NULL;
+}
+
+// Check if queue is full (malloc fails)
+int isFull() {
+    struct Node* temp = (struct Node*)malloc(sizeof(struct Node));
+    if (temp == NULL)
+        return 1;
+    free(temp);
+    return 0;
+}
+
+// Insert into queue
+void enqueue(int value) {
+    if (isFull()) {
+        printf("Queue is FULL! Cannot insert %d\n", value);
+        return;
+    }
+
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = value;
+    newNode->next = NULL;
+
+    if (isEmpty()) {
+        front = rear = newNode;
+    } else {
+        rear->next = newNode;
+        rear = newNode;
+    }
+
+    printf("%d inserted into queue.\n", value);
+}
+
+// Delete from queue
+void dequeue() {
+    if (isEmpty()) {
+        printf("Queue is EMPTY! Nothing to delete.\n");
+        return;
+    }
+
+    struct Node* temp = front;
+    printf("%d deleted from queue.\n", front->data);
+    front = front->next;
+    free(temp);
+
+    if (front == NULL)
+        rear = NULL;
+}
+
+// Display queue
+void display() {
+    if (isEmpty()) {
+        printf("Queue is EMPTY!\n");
+        return;
+    }
+
+    struct Node* temp = front;
+    printf("Queue elements: ");
+
+    while (temp != NULL) {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    }
+
+    printf("\n");
+}
+
+int main() {
+    enqueue(10);
+    enqueue(20);
+    enqueue(30);
+    enqueue(40);
+
+    display();
+
+    dequeue();
+    dequeue();
+
+    display();
+
+    return 0;
+}
