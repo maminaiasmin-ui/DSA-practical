@@ -1,0 +1,203 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node *next;
+};
+
+struct Node *head = NULL;
+
+// --- a) Create Linked List ---
+void createList(int n) {
+    int value;
+    struct Node *newNode, *temp;
+
+    for (int i = 0; i < n; i++) {
+        newNode = (struct Node *)malloc(sizeof(struct Node));
+        printf("Enter value for node %d: ", i + 1);
+        scanf("%d", &value);
+        newNode->data = value;
+        newNode->next = NULL;
+
+        if (head == NULL) {
+            head = newNode;
+        } else {
+            temp = head;
+            while (temp->next != NULL)
+                temp = temp->next;
+            temp->next = newNode;
+        }
+    }
+}
+
+// --- b) Count nodes ---
+int countNodes() {
+    int count = 0;
+    struct Node *temp = head;
+    while (temp != NULL) {
+        count++;
+        temp = temp->next;
+    }
+    return count;
+}
+
+// --- c) Print all nodes ---
+void printList() {
+    struct Node *temp = head;
+    if (head == NULL) {
+        printf("List is empty.\n");
+        return;
+    }
+    printf("Linked List: ");
+    while (temp != NULL) {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    }
+    printf("\n");
+}
+
+// --- d) Add node at first ---
+void addFirst(int value) {
+    struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
+    newNode->data = value;
+    newNode->next = head;
+    head = newNode;
+}
+
+// Add at last ---
+void addLast(int value) {
+    struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
+    newNode->data = value;
+    newNode->next = NULL;
+
+    struct Node *temp = head;
+
+    if (head == NULL) {
+        head = newNode;
+        return;
+    }
+
+    while (temp->next != NULL)
+        temp = temp->next;
+
+    temp->next = newNode;
+}
+
+// Add at k-th position ---
+void addAtPosition(int value, int pos) {
+    int i;
+    struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
+    newNode->data = value;
+
+    if (pos == 1) {
+        newNode->next = head;
+        head = newNode;
+        return;
+    }
+
+    struct Node *temp = head;
+    for (i = 1; i < pos - 1 && temp != NULL; i++)
+        temp = temp->next;
+
+    if (temp == NULL) {
+        printf("Invalid position!\n");
+        return;
+    }
+
+    newNode->next = temp->next;
+    temp->next = newNode;
+}
+
+// --- e) Delete first node ---
+void deleteFirst() {
+    if (head == NULL) {
+        printf("List is empty!\n");
+        return;
+    }
+    struct Node *temp = head;
+    head = head->next;
+    free(temp);
+}
+
+// Delete last node ---
+void deleteLast() {
+    if (head == NULL) {
+        printf("List is empty!\n");
+        return;
+    }
+
+    struct Node *temp = head, *prev = NULL;
+
+    while (temp->next != NULL) {
+        prev = temp;
+        temp = temp->next;
+    }
+
+    if (prev == NULL)
+        head = NULL;
+    else
+        prev->next = NULL;
+
+    free(temp);
+}
+
+// Delete k-th node ---
+void deleteAtPosition(int pos) {
+    if (head == NULL) {
+        printf("List is empty!\n");
+        return;
+    }
+
+    struct Node *temp = head, *prev = NULL;
+
+    if (pos == 1) {
+        head = head->next;
+        free(temp);
+        return;
+    }
+
+    for (int i = 1; i < pos && temp != NULL; i++) {
+        prev = temp;
+        temp = temp->next;
+    }
+
+    if (temp == NULL) {
+        printf("Invalid position!\n");
+        return;
+    }
+
+    prev->next = temp->next;
+    free(temp);
+}
+
+// --- f) Search element ---
+int searchElement(int key) {
+    struct Node *temp = head;
+    int pos = 1;
+
+    while (temp != NULL) {
+        if (temp->data == key)
+            return pos;
+        temp = temp->next;
+        pos++;
+    }
+    return -1;
+}
+
+int main() {
+    int n, choice, value, pos, result;
+
+    printf("Enter number of nodes: ");
+    scanf("%d", &n);
+    createList(n);
+
+    printf("\nList created successfully.\n");
+    printList();
+
+    printf("\nTotal nodes: %d\n", countNodes());
+
+    // You may call any function here for testing.
+
+    return 0;
+}
